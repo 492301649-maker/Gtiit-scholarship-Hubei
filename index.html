@@ -42,7 +42,7 @@
                                 <option value="yes">是</option>
                                 <option value="no">否</option>
                             </select>
-                            <p class="text-xs text-gray-500 mt-1">创新潜质奖学金所有类别均需达到特控线</p>
+                            <p class="text-xs text-red-500 mt-1 font-medium">⚠️ 所有奖学金均需达到湖北省特控线方可获得</p>
                         </div>
                     </div>
                 </div>
@@ -112,6 +112,12 @@
         <div id="results" class="hidden p-6 border-t border-gray-200 bg-gray-50">
             <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">📊 您的奖学金测算结果</h3>
             
+            <!-- 未达特控线提示 -->
+            <div id="noSpecialLineWarning" class="hidden mb-6 p-5 bg-red-50 rounded-lg border border-red-200">
+                <h4 class="font-semibold text-red-800 text-lg mb-2">❌ 未达到湖北省特控线</h4>
+                <p class="text-red-700">根据学校政策，所有奖学金均需达到湖北省特控线方可获得。您目前无法获得任何奖学金。</p>
+            </div>
+            
             <!-- 方案对比 -->
             <div id="comparison" class="space-y-8">
                 <!-- 方案一：选择新生入学奖学金 -->
@@ -131,13 +137,13 @@
             <div class="mt-8 bg-yellow-50 p-5 rounded-lg border border-yellow-200">
                 <h4 class="font-semibold text-yellow-800 mb-2">⚠️ 重要说明</h4>
                 <ul class="text-sm text-yellow-700 space-y-1">
+                    <li>• <strong>所有奖学金均需达到湖北省特控线</strong></li>
                     <li>• 非专项奖学金总额不超过15万元/学年</li>
-                    <li>• 创新潜质奖学金所有类别均需达到湖北省特控线</li>
-                    <li>• 创新潜质奖学金为一次性发放，无续得要求</li>
+                    <li>• 创新潜质奖学金必须在5月31号前申请，一次性发放，无续得</li>
                     <li>• 学科特长奖学金可与新生入学奖学金兼得</li>
                     <li>• 以上测算基于您提供的预期GPA，实际金额以每年学业表现为准</li>
-                    <li>• 参评学年所修得的学分须达到奖学金委员会规定的对应专业最低学分要求</li>
-                    <li>• 最终结果以学校官方审核为准</li>
+                    <li>• 参评学年所修得的学分须达到奖学金委员会规定的对应专业最低学分要求且满足相应GPA要求可续得相应等级的奖励</li>
+                    <li>• 以上预测仅供参考，最终结果以学校官方审核为准</li>
                 </ul>
             </div>
         </div>
@@ -223,23 +229,34 @@
             const competition = document.getElementById('competition').value;
 
             // 验证输入
-            if (rank === Infinity && mathEnglish === 0 && specialLine === '') {
-                alert('请至少填写高考排名或数学英语总分');
+            if (specialLine === '') {
+                alert('请选择是否达到湖北省特控线');
                 return;
             }
 
+            // 显示结果区域
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+
+            // 核心政策：未达特控线，所有奖学金均不得
+            if (specialLine !== 'yes') {
+                document.getElementById('noSpecialLineWarning').classList.remove('hidden');
+                document.getElementById('comparison').classList.add('hidden');
+                return;
+            }
+
+            // 达到特控线，正常计算
+            document.getElementById('noSpecialLineWarning').classList.add('hidden');
+            document.getElementById('comparison').classList.remove('hidden');
+
             // 计算可获得的奖学金
             const entranceScholarship = getEntranceScholarship(rank, mathEnglish);
-            const innovationScholarship = getInnovationScholarship(rank, specialLine);
+            const innovationScholarship = getInnovationScholarship(rank);
             const disciplineScholarship = scholarshipData.discipline[competition] || null;
 
             // 生成结果
             generateResults(entranceScholarship, innovationScholarship, disciplineScholarship, 
                           expectedGPA, expectedRank);
-
-            // 显示结果
-            document.getElementById('results').classList.remove('hidden');
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         }
 
         function resetForm() {
@@ -247,6 +264,8 @@
             document.getElementById('scholarshipForm').reset();
             // 隐藏结果区域
             document.getElementById('results').classList.add('hidden');
+            document.getElementById('noSpecialLineWarning').classList.add('hidden');
+            document.getElementById('comparison').classList.remove('hidden');
             // 滚动到页面顶部
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -264,12 +283,8 @@
             return null;
         }
 
-        function getInnovationScholarship(rank, specialLine) {
-            // 所有创新潜质奖学金类别均需达到特控线
-            if (specialLine !== 'yes') {
-                return null;
-            }
-            
+        function getInnovationScholarship(rank) {
+            // 特控线检查已在calculateScholarship中完成
             if (rank <= scholarshipData.innovation.A.rank) {
                 return scholarshipData.innovation.A;
             } else {
