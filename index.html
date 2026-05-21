@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广东以色列理工学院2026年奖学金测算</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-8 px-4">
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden">
+        <!-- 头部 -->
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6">
+            <h1 class="text-3xl font-bold text-center">广东以色列理工学院</h1>
+            <h2 class="text-xl text-center mt-2">2026年本科新生奖学金测算工具</h2>
+            <p class="text-center mt-2 text-blue-100">湖北考生专属 | 数据更新至2026年5月 | GPA动态测算版</p>
+        </div>
+
+        <!-- 输入表单 -->
+        <div class="p-6">
+            <form id="scholarshipForm" class="space-y-6">
+                <!-- 高考成绩信息 -->
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mr-3 text-sm">1</span>
+                        高考成绩信息
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">高考全省排名</label>
+                            <input type="number" id="rank" placeholder="请输入您的高考全省排名" 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">数学+英语总分</label>
+                            <input type="number" id="mathEnglish" placeholder="请输入数学+英语总分" 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">是否达到湖北省特控线</label>
+                            <select id="specialLine" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">请选择</option>
+                                <option value="yes">是</option>
+                                <option value="no">否</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 大学预期表现 -->
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mr-3 text-sm">2</span>
+                        大学预期学习表现（用于续得测算）
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">预期大学GPA（满分100）</label>
+                            <input type="number" id="expectedGPA" placeholder="请输入预期GPA（如85）" min="0" max="100" step="0.1"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <p class="text-xs text-gray-500 mt-1">留空将显示所有GPA档位的测算结果</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">预期专业排名百分比</label>
+                            <select id="expectedRank" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">请选择</option>
+                                <option value="5">前5%</option>
+                                <option value="10">前10%</option>
+                                <option value="15">前15%</option>
+                                <option value="50">前50%及以后</option>
+                            </select>
+                            <p class="text-xs text-gray-500 mt-1">用于计算进阶奖学金</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 学科特长信息 -->
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mr-3 text-sm">3</span>
+                        学科特长信息（奥赛获奖）
+                    </h3>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">全国中学生奥林匹克竞赛获奖等级</label>
+                        <select id="competition" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="none">未获奖</option>
+                            <option value="national1">国家级一等奖</option>
+                            <option value="national2">国家级二等奖</option>
+                            <option value="national3">国家级三等奖</option>
+                            <option value="provincial1">省级一等奖</option>
+                            <option value="provincial2">省级二等奖</option>
+                            <option value="provincial3">省级三等奖</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 操作按钮 -->
+                <div class="text-center flex flex-col sm:flex-row gap-4 justify-center">
+                    <button type="button" onclick="calculateScholarship()" 
+                            class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-8 py-3 rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-indigo-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex-1 sm:flex-none">
+                        开始测算奖学金
+                    </button>
+                    <button type="button" onclick="resetForm()" 
+                            class="bg-gray-500 text-white px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex-1 sm:flex-none">
+                        重置
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 结果展示区域 -->
+        <div id="results" class="hidden p-6 border-t border-gray-200 bg-gray-50">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">📊 您的奖学金测算结果</h3>
+            
+            <!-- 方案对比 -->
+            <div id="comparison" class="space-y-8">
+                <!-- 方案一：选择新生入学奖学金 -->
+                <div id="option1" class="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-600">
+                    <h4 class="text-xl font-semibold text-blue-700 mb-4">方案一：选择新生入学奖学金（推荐）</h4>
+                    <div id="option1Content"></div>
+                </div>
+
+                <!-- 方案二：选择创新潜质奖学金 -->
+                <div id="option2" class="bg-white p-6 rounded-lg shadow-md border-l-4 border-green-600 hidden">
+                    <h4 class="text-xl font-semibold text-green-700 mb-4">方案二：选择创新潜质奖学金</h4>
+                    <div id="option2Content"></div>
+                </div>
+            </div>
+
+            <!-- 重要说明 -->
+            <div class="mt-8 bg-yellow-50 p-5 rounded-lg border border-yellow-200">
+                <h4 class="font-semibold text-yellow-800 mb-2">⚠️ 重要说明</h4>
+                <ul class="text-sm text-yellow-700 space-y-1">
+                    <li>• 非专项奖学金总额不超过15万元/学年</li>
+                    <li>• 新生入学奖学金和学科特长奖学金需满足GPA≥80且达到最低学分要求才能续得</li>
+                    <li>• 创新潜质奖学金为一次性发放，且必须在5月31日前申请</li>
+                    <li>• 学科特长奖学金可与新生入学奖学金兼得</li>
+                    <li>• 以上测算基于您提供的预期GPA，实际金额以每年学业表现为准</li>
+                    <li>• 最终结果以学校官方审核为准</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 底部 -->
+        <div class="bg-gray-800 text-white p-4 text-center text-sm">
+            <p>数据来源：广东以色列理工学院2026年招生奖学金政策</p>
+            <p class="mt-1">咨询电话：0754-88077060 | 官网：www.gtiit.edu.cn</p>
+        </div>
+    </div>
+
+    <script>
+        // 奖学金数据（湖北省）
+        const scholarshipData = {
+            // 新生入学奖学金
+            entrance: {
+                president: {
+                    rank: 5000,
+                    name: "校长奖学金",
+                    firstYear: 150000,
+                    tiers: [
+                        { gpa: 90, rank: 100, amount: 150000, description: "GPA≥90" },
+                        { gpa: 80, rank: 100, amount: 105000, description: "80≤GPA<90" }
+                    ],
+                    maxFourYear: 600000
+                },
+                first: {
+                    rank: 9000,
+                    name: "一等奖学金",
+                    firstYear: 105000,
+                    tiers: [
+                        { gpa: 80, rank: 100, amount: 105000, description: "GPA≥80" }
+                    ],
+                    maxFourYear: 420000
+                },
+                second: {
+                    rank: 20000,
+                    name: "二等奖学金",
+                    firstYear: 60000,
+                    tiers: [
+                        { gpa: 90, rank: 5, amount: 105000, description: "GPA≥90且专业前5%" },
+                        { gpa: 85, rank: 10, amount: 85000, description: "GPA≥85且专业前10%" },
+                        { gpa: 80, rank: 100, amount: 60000, description: "GPA≥80" }
+                    ],
+                    maxFourYear: 375000
+                },
+                third: {
+                    mathEnglish: 230,
+                    name: "三等奖学金",
+                    firstYear: 40000,
+                    tiers: [
+                        { gpa: 90, rank: 5, amount: 105000, description: "GPA≥90且专业前5%" },
+                        { gpa: 85, rank: 10, amount: 85000, description: "GPA≥85且专业前10%" },
+                        { gpa: 85, rank: 15, amount: 55000, description: "GPA≥85且专业前15%" },
+                        { gpa: 80, rank: 100, amount: 40000, description: "GPA≥80" }
+                    ],
+                    maxFourYear: 355000
+                }
+            },
+            // 创新潜质奖学金
+            innovation: {
+                A: { rank: 30000, amount: 80000, name: "创新潜质奖学金A类" },
+                B: { specialLine: true, amount: 50000, name: "创新潜质奖学金B类" }
+            },
+            // 学科特长奖学金
+            discipline: {
+                national1: { annual: 75000, fourYear: 300000, name: "学科特长奖学金（国一）" },
+                national2: { annual: 62500, fourYear: 250000, name: "学科特长奖学金（国二）" },
+                national3: { annual: 50000, fourYear: 200000, name: "学科特长奖学金（国三）" },
+                provincial1: { annual: 37500, fourYear: 150000, name: "学科特长奖学金（省一）" },
+                provincial2: { annual: 25000, fourYear: 100000, name: "学科特长奖学金（省二）" },
+                provincial3: { annual: 20000, fourYear: 80000, name: "学科特长奖学金（省三）" }
+            }
+        };
+
+        function calculateScholarship() {
+            // 获取输入值
+            const rank = parseInt(document.getElementById('rank').value) || Infinity;
+            const mathEnglish = parseInt(document.getElementById('mathEnglish').value) || 0;
+            const specialLine = document.getElementById('specialLine').value;
+            const expectedGPA = parseFloat(document.getElementById('expectedGPA').value) || null;
+            const expectedRank = parseInt(document.getElementById('expectedRank').value) || 100;
+            const competition = document.getElementById('competition').value;
+
+            // 验证输入
+            if (rank === Infinity && mathEnglish === 0 && specialLine === '') {
+                alert('请至少填写高考排名或数学英语总分');
+                return;
+            }
+
+            // 计算可获得的奖学金
+            const entranceScholarship = getEntranceScholarship(rank, mathEnglish);
+            const innovationScholarship = getInnovationScholarship(rank, specialLine);
+            const disciplineScholarship = scholarshipData.discipline[competition] || null;
+
+            // 生成结果
+            generateResults(entranceScholarship, innovationScholarship, disciplineScholarship, 
+                          expectedGPA, expectedRank);
+
+            // 显示结果
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            // 重置所有输入框
+            document.getElementById('scholarshipForm').reset();
+            // 隐藏结果区域
+            document.getElementById('results').classList.add('hidden');
+            // 滚动到页面顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function getEntranceScholarship(rank, mathEnglish) {
+            if (rank <= scholarshipData.entrance.president.rank) {
+                return scholarshipData.entrance.president;
+            } else if (rank <= scholarshipData.entrance.first.rank) {
+                return scholarshipData.entrance.first;
+            } else if (rank <= scholarshipData.entrance.second.rank) {
+                return scholarshipData.entrance.second;
+            } else if (mathEnglish >= scholarshipData.entrance.third.mathEnglish) {
+                return scholarshipData.entrance.third;
+            }
+            return null;
+        }
+
+        function getInnovationScholarship(rank, specialLine) {
+            if (rank <= scholarshipData.innovation.A.rank) {
+                return scholarshipData.innovation.A;
+            } else if (specialLine === 'yes') {
+                return scholarshipData.innovation.B;
+            }
+            return null;
+        }
+
+        function calculateEntranceAnnualAmount(scholarship, gpa, rankPercent) {
+            if (!scholarship || gpa < 80) return 0;
+            
+            // 从高到低检查符合条件的档位
+            for (const tier of scholarship.tiers) {
+                if (gpa >= tier.gpa && rankPercent <= tier.rank) {
+                    return tier.amount;
+                }
+            }
+            return 0;
+        }
+
+        function generateEntranceTiersTable(scholarship) {
+            if (!scholarship) return '';
+            
+            let html = `
+                <div class="mt-4 overflow-x-auto">
+                    <table class="w-full text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-blue-100">
+                                <th class="border border-blue-200 px-3 py-2 text-left">GPA要求</th>
+                                <th class="border border-blue-200 px-3 py-2 text-left">专业排名要求</th>
+                                <th class="border border-blue-200 px-3 py-2 text-right">年度金额</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            for (const tier of scholarship.tiers) {
+                const rankText = tier.rank === 100 ? "无" : `前${tier.rank}%`;
+                html += `
+                    <tr>
+                        <td class="border border-blue-200 px-3 py-2">≥${tier.gpa}分</td>
+                        <td class="border border-blue-200 px-3 py-2">${rankText}</td>
+                        <td class="border border-blue-200 px-3 py-2 text-right font-medium">${formatMoney(tier.amount)}</td>
+                    </tr>
+                `;
+            }
+            
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">注：GPA低于80分将无法续得该奖学金</p>
+            `;
+            
+            return html;
+        }
+
+        function generateResults(entrance, innovation, discipline, expectedGPA, expectedRank) {
+            const option1Content = document.getElementById('option1Content');
+            const option2 = document.getElementById('option2');
+            const option2Content = document.getElementById('option2Content');
+
+            // 方案一：选择新生入学奖学金
+            let option1HTML = '';
+            let option1FirstYear = 0;
+            let option1ExpectedAnnual = 0;
+            let option1ExpectedFourYear = 0;
+
+            if (entrance) {
+                option1FirstYear += entrance.firstYear;
+                
+                // 计算预期年度金额
+                if (expectedGPA) {
+                    option1ExpectedAnnual = calculateEntranceAnnualAmount(entrance, expectedGPA, expectedRank);
+                } else {
+                    option1ExpectedAnnual = entrance.firstYear; // 默认显示首年金额
+                }
+                
+                // 计算预期四年总额（首年+后续三年预期）
+                option1ExpectedFourYear = entrance.firstYear + (option1ExpectedAnnual * 3);
+
+                option1HTML += `
+                    <div class="mb-6 p-4 bg-blue-50 rounded-lg">
+                        <h5 class="font-semibold text-blue-800 text-lg">✅ ${entrance.name}</h5>
+                        <div class="grid md:grid-cols-2 gap-4 mt-3">
+                            <div class="bg-white p-3 rounded border">
+                                <p class="text-sm text-gray-600">首年金额（固定）</p>
+                                <p class="text-xl font-bold text-blue-600">${formatMoney(entrance.firstYear)}</p>
+                            </div>
+                `;
+                
+                if (expectedGPA) {
+                    const status = expectedGPA >= 80 ? "可续得" : "无法续得";
+                    const statusColor = expectedGPA >= 80 ? "text-green-600" : "text-red-600";
+                    
+                    option1HTML += `
+                            <div class="bg-white p-3 rounded border">
+                                <p class="text-sm text-gray-600">后续年度预期（GPA ${expectedGPA}）</p>
+                                <p class="text-xl font-bold text-blue-600">${formatMoney(option1ExpectedAnnual)}</p>
+                                <p class="text-sm ${statusColor}">${status}</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 bg-white p-3 rounded border">
+                            <p class="text-sm text-gray-600">四年预期总额（首年+后续三年预期）</p>
+                            <p class="text-2xl font-bold text-blue-700">${formatMoney(option1ExpectedFourYear)}</p>
+                        </div>
+                    `;
+                } else {
+                    option1HTML += `
+                            <div class="bg-white p-3 rounded border">
+                                <p class="text-sm text-gray-600">四年最高总额</p>
+                                <p class="text-xl font-bold text-blue-600">${formatMoney(entrance.maxFourYear)}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // 显示各档位详细信息
+                option1HTML += `
+                    <div class="mt-4">
+                        <h6 class="font-medium text-gray-700 mb-2">📋 各GPA档位续得金额明细</h6>
+                        ${generateEntranceTiersTable(entrance)}
+                    </div>
+                `;
+                
+                option1HTML += `</div>`;
+            } else {
+                option1HTML += `
+                    <div class="mb-4 p-4 bg-gray-100 rounded-lg">
+                        <h5 class="font-semibold text-gray-600">❌ 未获得新生入学奖学金</h5>
+                    </div>
+                `;
+            }
+
+            // 学科特长奖学金（可与新生入学奖学金兼得）
+            if (discipline) {
+                option1FirstYear += discipline.annual;
+                option1ExpectedAnnual += discipline.annual;
+                option1ExpectedFourYear = entrance ? option1ExpectedFourYear : 0;
+                option1ExpectedFourYear += discipline.fourYear;
+
+                option1HTML += `
+                    <div class="mb-6 p-4 bg-green-50 rounded-lg">
+                        <h5 class="font-semibold text-green-800 text-lg">✅ ${discipline.name}</h5>
+                        <div class="grid md:grid-cols-2 gap-4 mt-3">
+                            <div class="bg-white p-3 rounded border">
+                                <p class="text-sm text-gray-600">年度金额</p>
+                                <p class="text-xl font-bold text-green-600">${formatMoney(discipline.annual)}</p>
+                            </div>
+                            <div class="bg-white p-3 rounded border">
+                                <p class="text-sm text-gray-600">四年总额</p>
+                                <p class="text-xl font-bold text-green-600">${formatMoney(discipline.fourYear)}</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-3">续得要求：GPA≥80，满足最低学分要求</p>
+                        ${expectedGPA ? `
+                            <p class="text-sm mt-2 ${expectedGPA >= 80 ? 'text-green-600' : 'text-red-600'}">
+                                您的预期GPA ${expectedGPA}：${expectedGPA >= 80 ? '可续得' : '无法续得'}
+                            </p>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            // 应用非专项奖学金总额限制（15万/年）
+            const nonSpecialFirstYear = (entrance ? entrance.firstYear : 0) + 
+                                      (discipline ? discipline.annual : 0);
+            
+            const nonSpecialExpectedAnnual = option1ExpectedAnnual;
+            
+            let actualFirstYear = option1FirstYear;
+            let actualExpectedAnnual = option1ExpectedAnnual;
+            
+            if (nonSpecialFirstYear > 150000) {
+                const excess = nonSpecialFirstYear - 150000;
+                actualFirstYear -= excess;
+            }
+            
+            if (nonSpecialExpectedAnnual > 150000) {
+                const excess = nonSpecialExpectedAnnual - 150000;
+                actualExpectedAnnual -= excess;
+                // 调整四年预期总额
+                option1ExpectedFourYear -= excess * 3;
+            }
+
+            // 方案一总计
+            option1HTML += `
+                <div class="mt-6 p-5 bg-blue-100 rounded-lg border-2 border-blue-300">
+                    <h5 class="font-bold text-blue-900 text-xl mb-4">📈 方案一总计</h5>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded">
+                            <p class="text-gray-700">首年预计获得</p>
+                            <p class="text-3xl font-bold text-blue-700">${formatMoney(actualFirstYear)}</p>
+                        </div>
+            `;
+            
+            if (expectedGPA) {
+                option1HTML += `
+                        <div class="bg-white p-4 rounded">
+                            <p class="text-gray-700">后续年度预期</p>
+                            <p class="text-3xl font-bold text-blue-700">${formatMoney(actualExpectedAnnual)}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 bg-white p-4 rounded">
+                        <p class="text-gray-700">四年预期总额（基于GPA ${expectedGPA}）</p>
+                        <p class="text-3xl font-bold text-blue-700">${formatMoney(option1ExpectedFourYear)}</p>
+                    </div>
+                `;
+            } else {
+                option1HTML += `
+                        <div class="bg-white p-4 rounded">
+                            <p class="text-gray-700">四年最高可获得</p>
+                            <p class="text-3xl font-bold text-blue-700">${formatMoney(entrance ? entrance.maxFourYear + (discipline ? discipline.fourYear : 0) : 0)}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (nonSpecialFirstYear > 150000 || nonSpecialExpectedAnnual > 150000) {
+                option1HTML += `
+                    <div class="mt-4 p-3 bg-yellow-100 rounded border border-yellow-300">
+                        <p class="text-yellow-800 text-sm">
+                            ⚠️ 非专项奖学金总额超过15万元/年限额，已按政策进行调整
+                        </p>
+                    </div>
+                `;
+            }
+            
+            option1HTML += `</div>`;
+            option1Content.innerHTML = option1HTML;
+
+            // 方案二：选择创新潜质奖学金（如果有资格）
+            if (innovation) {
+                option2.classList.remove('hidden');
+                let option2HTML = '';
+                let option2FirstYear = innovation.amount;
+                let option2FourYear = innovation.amount;
+
+                option2HTML += `
+                    <div class="mb-6 p-4 bg-green-50 rounded-lg">
+                        <h5 class="font-semibold text-green-800 text-lg">✅ ${innovation.name}</h5>
+                        <div class="bg-white p-3 rounded border mt-3">
+                            <p class="text-sm text-gray-600">一次性发放</p>
+                            <p class="text-xl font-bold text-green-600">${formatMoney(innovation.amount)}</p>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-3">无续得要求，仅发放一次</p>
+                    </div>
+                `;
+
+                // 学科特长奖学金（不可与创新潜质兼得）
+                if (discipline) {
+                    option2HTML += `
+                        <div class="mb-6 p-4 bg-gray-100 rounded-lg">
+                            <h5 class="font-semibold text-gray-600">❌ ${discipline.name}</h5>
+                            <p class="text-sm text-gray-500 mt-2">不可与创新潜质奖学金兼得</p>
+                        </div>
+                    `;
+                }
+
+                // 方案二总计
+                option2HTML += `
+                    <div class="mt-6 p-5 bg-green-100 rounded-lg border-2 border-green-300">
+                        <h5 class="font-bold text-green-900 text-xl mb-4">📈 方案二总计</h5>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded">
+                                <p class="text-gray-700">首年获得</p>
+                                <p class="text-3xl font-bold text-green-700">${formatMoney(option2FirstYear)}</p>
+                            </div>
+                            <div class="bg-white p-4 rounded">
+                                <p class="text-gray-700">四年总计</p>
+                                <p class="text-3xl font-bold text-green-700">${formatMoney(option2FourYear)}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // 方案对比建议
+                if (entrance) {
+                    const entranceBetter = option1ExpectedFourYear > option2FourYear;
+                    const difference = Math.abs(option1ExpectedFourYear - option2FourYear);
+                    
+                    option2HTML += `
+                        <div class="mt-6 p-4 ${entranceBetter ? 'bg-blue-50 border-blue-200' : 'bg-green-50 border-green-200'} rounded-lg border">
+                            <h5 class="font-semibold ${entranceBetter ? 'text-blue-800' : 'text-green-800'}">💡 方案对比建议</h5>
+                            <p class="text-gray-700 mt-2">
+                                根据您的预期GPA ${expectedGPA || '(未填写)'}，
+                                <strong>${entranceBetter ? '方案一（新生入学奖学金）' : '方案二（创新潜质奖学金）'}</strong>
+                                更优，四年预计可多获得 <strong>${formatMoney(difference)}</strong>
+                            </p>
+                            ${entranceBetter ? `
+                                <p class="text-sm text-gray-600 mt-2">
+                                    注：新生入学奖学金需要保持良好的学业表现才能续得，如果担心无法保持GPA≥80，可以考虑选择一次性发放的创新潜质奖学金
+                                </p>
+                            ` : ''}
+                        </div>
+                    `;
+                }
+                
+                option2Content.innerHTML = option2HTML;
+            } else {
+                option2.classList.add('hidden');
+            }
+        }
+
+        function formatMoney(amount) {
+            return '¥' + amount.toLocaleString('zh-CN');
+        }
+
+        // 回车键触发计算
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.target.form === document.getElementById('scholarshipForm')) {
+                e.preventDefault();
+                calculateScholarship();
+            }
+        });
+    </script>
+</body>
+</html>
